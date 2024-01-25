@@ -46,7 +46,7 @@ def eval_model(args):
     model.to(device='cuda',  dtype=torch.bfloat16)
 
 
-    image_processor = CLIPImageProcessor.from_pretrained("/data/hypertext/ucaswei/cache/vit-large-patch14/vit-large-patch14/", torch_dtype=torch.float16)
+    image_processor = CLIPImageProcessor.from_pretrained("/cache/vit-large-patch14/", torch_dtype=torch.float16)
 
     image_processor_high = BlipImageEvalProcessor(image_size=1024)
 

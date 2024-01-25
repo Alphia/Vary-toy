@@ -43,7 +43,7 @@ def init_model():
                                                 trust_remote_code=True)
     model.to(device='cuda', dtype=torch.bfloat16)
     image_processor = CLIPImageProcessor.from_pretrained(
-        "/cache/vit-large-patch14/vit-large-patch14/", torch_dtype=torch.float16)
+        "/cache/vit-large-patch14/", torch_dtype=torch.float16)
     return tokenizer, model, image_processor
 
 
