@@ -23,7 +23,7 @@ class varyQwenModel(QWenModel):
     def __init__(self, config: QWenConfig):
         super(varyQwenModel, self).__init__(config)
 
-        self.vision_tower = CLIPVisionModel.from_pretrained('/data/hypertext/ucaswei/cache/vit-large-patch14/vit-large-patch14/')
+        self.vision_tower = CLIPVisionModel.from_pretrained('/cache/vit-large-patch14/')
         self.vision_tower_high = build_sam_vit_b()
 
         self.mm_projector =  nn.Linear(1024, 1024)
@@ -41,7 +41,7 @@ class varyQwenModel(QWenModel):
     ):
 
         # 224*224
-        image_processor = CLIPImageProcessor.from_pretrained('/data/hypertext/ucaswei/cache/vit-large-patch14/vit-large-patch14/') 
+        image_processor = CLIPImageProcessor.from_pretrained('/cache/vit-large-patch14/')
         # 1024*1024
         image_processor_high = BlipImageEvalProcessor(image_size=1024)
       

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   vary:
-    image: alphia/vary-runtime:v1
+    image: alphia/vary-runtime:v3
 #    command: /bin/bash -c "FLASK_APP=/workspace/Vary-toy/Vary-master/vary/demo/run_web_service.py flask run --host=0.0.0.0 --port=8080"
     command: /bin/bash -c "cd /workspace/Vary-toy/Vary-master/; export PYTHONPATH=\"${PYTHONPATH}:/workspace/Vary-toy/Vary-master/vary\";  flask --app vary/demo/run_web_service.py run --host=0.0.0.0 --port=8080"
     depends_on:
@@ -10,6 +10,7 @@ services:
     volumes:
       - /home/hegang/workspace:/workspace
       - /home/hegang/runpod-volume:/runpod-volume
+      - /home/hegang/workspace/cache:/cache
     ports:
       - '10022:22'
       - '18080:8080'
