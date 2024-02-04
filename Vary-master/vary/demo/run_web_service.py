@@ -9,7 +9,7 @@ def captioning():
     image_url = data['image_url']
     prompt = data['prompt']
     caption = eval_model(image_url, prompt)
-    return jsonify({caption: caption})
+    return jsonify({'caption': caption})
 
 
 if __name__ == '__main__':
