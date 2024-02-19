@@ -7,7 +7,7 @@ networks:
 services:
   vary:
     image: alphia/vary-runtime:v3
-    command: /bin/bash -c "cd /workspace/Vary-toy/Vary-master/; flask --app vary/demo/run_web_service.py run --host=0.0.0.0 --port=18080"
+    command: /bin/bash -c "cd /workspace/Vary-toy/Vary-master/; export PYTHONPATH=\"${PYTHONPATH}:/workspace/Vary-toy/Vary-master\"; flask --app vary/demo/run_web_service.py run --host=0.0.0.0 --port=18080"
     depends_on:
       - minio
     restart: unless-stopped
@@ -62,7 +62,7 @@ services:
     networks:
       - app-tier
   caption-msg-consumer:
-    image: alphia/caption-message-consumer:v12
+    image: alphia/caption-message-consumer:v13
     restart: unless-stopped
     depends_on:
       - rabbitmq
