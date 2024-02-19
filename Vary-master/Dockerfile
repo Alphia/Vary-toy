@@ -10,3 +10,5 @@ RUN pip3 install flash-attn --no-build-isolation
 WORKDIR /requirement
 COPY ./pyproject.toml /requirement
 RUN pip3 install e .
+# 暴露端口
+EXPOSE 18080

@@ -1,9 +1,13 @@
 version: '3.8'
+
+networks:
+  app-tier:
+    driver: bridge
+
 services:
-  vary:
+  vary.com:
     image: alphia/vary-runtime:v3
-#    command: /bin/bash -c "FLASK_APP=/workspace/Vary-toy/Vary-master/vary/demo/run_web_service.py flask run --host=0.0.0.0 --port=8080"
-    command: /bin/bash -c "cd /workspace/Vary-toy/Vary-master/; export PYTHONPATH=\"${PYTHONPATH}:/workspace/Vary-toy/Vary-master/vary\";  flask --app vary/demo/run_web_service.py run --host=0.0.0.0 --port=8080"
+    command: /bin/bash -c "cd /workspace/Vary-toy/Vary-master/; flask --app vary/demo/run_web_service.py run --host=0.0.0.0 --port=18080"
     depends_on:
       - minio
     restart: unless-stopped
@@ -13,22 +17,18 @@ services:
       - /home/hegang/workspace/cache:/cache
     ports:
       - '10022:22'
-      - '18080:8080'
+      - '18080:18080'
     environment:
       PUBLIC_KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINhnX1OHpedZcA/cHvGINxTKsR5NE1qfTFDSS1CaEk9h alphia@163.com"
       JUPYTER_PASSWORD: "Mgq789rBptney8eF"
-      HTTP_PROXY: "http://192.168.188.27:7890"
-      HTTPS_PROXY: "http://192.168.188.27:7890"
-      ALL_PROXY: "socks5://192.168.188.27:7890"
-      NO_PROXY: "*.xjtu.edu.cn,*.cn,localhost,192.168.0.0/16,127.0.0.1,172.18.0.0/16,172.17.0.0/16,172.0.0.0/8"
     networks:
-      - app
+      - app-tier
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['0']
+              device_ids: ['1']
               capabilities: [gpu]
   minio:
     image: bitnami/minio:latest
@@ -37,18 +37,20 @@ services:
       - /home/hegang/minio-data:/bitnami/minio/data
     ports:
       - '9001:9001'
+      - '9000:9000'
     networks:
-      - app
+      - app-tier
   rabbitmq:
     image: rabbitmq:3-management
     restart: unless-stopped
     ports:
       - '15672:15672'
+      - '5672:5672'
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     networks:
-      - app
+      - app-tier
   ppt-structure-svc:
     image: alphia/ppt-structure-service:v5
     restart: unless-stopped
@@ -58,16 +60,12 @@ services:
       - rabbitmq
       - minio
     networks:
-      - app
+      - app-tier
   caption-msg-consumer:
-    image: alphia/caption-message-consumer:v4
+    image: alphia/caption-message-consumer:v12
     restart: unless-stopped
     depends_on:
       - rabbitmq
       - minio
     networks:
-      - app
-
-networks:
-  app:
-   name: app
+      - app-tier
