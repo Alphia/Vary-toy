@@ -62,7 +62,7 @@ services:
     networks:
       - app-tier
   caption-msg-consumer:
-    image: alphia/caption-message-consumer:v13
+    image: alphia/caption-message-consumer:v14
     restart: unless-stopped
     depends_on:
       - rabbitmq
