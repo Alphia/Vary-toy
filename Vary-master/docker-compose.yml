@@ -54,6 +54,8 @@ services:
   ppt-structure-svc:
     image: alphia/ppt-structure-service:v7
     restart: unless-stopped
+    volumes:
+      - /home/hegang/ppt-data:/app/tmp
     ports:
       - '18000:18000'
     depends_on:
@@ -69,8 +71,10 @@ services:
     networks:
       - app-tier
   celery:
-    image: alphia/celery:v2
+    image: alphia/celery:v3
     restart: unless-stopped
+    volumes:
+      - /home/hegang/ppt-data:/app/tmp
     depends_on:
       - rabbitmq
       - minio
