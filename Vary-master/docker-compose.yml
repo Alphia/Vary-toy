@@ -52,17 +52,24 @@ services:
     networks:
       - app-tier
   ppt-structure-svc:
-    image: alphia/ppt-structure-service:v5
+    image: alphia/ppt-structure-service:v7
     restart: unless-stopped
     ports:
       - '18000:18000'
+    depends_on:
+      - celery
+    networks:
+      - app-tier
+  caption-msg-consumer:
+    image: alphia/caption-message-consumer:v15
+    restart: unless-stopped
     depends_on:
       - rabbitmq
       - minio
     networks:
       - app-tier
-  caption-msg-consumer:
-    image: alphia/caption-message-consumer:v15
+  celery:
+    image: alphia/celery:v2
     restart: unless-stopped
     depends_on:
       - rabbitmq
